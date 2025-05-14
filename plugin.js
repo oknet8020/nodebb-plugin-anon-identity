@@ -6,13 +6,15 @@ const user = require.main.require('./src/user');
 const plugin = {};
 
 plugin.init = async function (params) {
-  const { router, middleware, controllers } = params;
-  const helpers = require.main.require('./src/controllers/helpers');
+  const { router, middleware } = params;
 
-router.get('/user/:userslug/anon-settings', middleware.buildHeader, async (req, res) => {
-  console.log('[plugin-anon-identity] GET /user/:userslug/anon-settings accessed');    const anonName = await db.getObjectField(`user:${req.uid}`, 'anon:name');
+  router.get('/user/:userslug/anon-settings', middleware.buildHeader, async (req, res) => {
+    console.log('[plugin-anon-identity] GET /user/:userslug/anon-settings accessed');
+
+    const anonName = await db.getObjectField(`user:${req.uid}`, 'anon:name');
     const anonPic = await db.getObjectField(`user:${req.uid}`, 'anon:picture');
-helpers.render(res, 'anon-identity/anon-settings', {
+
+    res.render('anon-identity/anon-settings', {
       anonName: anonName || '',
       anonPic: anonPic || '',
     });
@@ -20,7 +22,9 @@ helpers.render(res, 'anon-identity/anon-settings', {
 
   router.post('/api/user/anon-settings', async (req, res) => {
     const { anonName, anonPic } = req.body;
-    if (!req.uid) return res.status(403).json({ error: 'Not logged in' });
+    if (!req.uid) {
+      return res.status(403).json({ error: 'Not logged in' });
+    }
 
     await db.setObjectField(`user:${req.uid}`, 'anon:name', anonName || '');
     await db.setObjectField(`user:${req.uid}`, 'anon:picture', anonPic || '');
