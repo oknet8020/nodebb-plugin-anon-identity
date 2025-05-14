@@ -2,7 +2,6 @@
 
 const db = require.main.require('./src/database');
 const user = require.main.require('./src/user');
-const helpers = require.main.require('./src/controllers/helpers');
 
 const plugin = {};
 
@@ -14,10 +13,10 @@ plugin.init = async function (params) {
     const anonName = await db.getObjectField(`user:${req.uid}`, 'anon:name');
     const anonPic = await db.getObjectField(`user:${req.uid}`, 'anon:picture');
 
-    helpers.render(res, 'anon-identity/anon-settings', {
-      anonName: anonName || '',
-      anonPic: anonPic || '',
-    });
+    res.locals.anonName = anonName || '';
+res.locals.anonPic = anonPic || '';
+res.render('anon-identity/anon-settings');
+
   });
 
   router.post('/api/user/anon-settings', async (req, res) => {
