@@ -9,8 +9,8 @@ plugin.init = async function (params) {
   const { router, middleware, controllers } = params;
   const helpers = require.main.require('./src/controllers/helpers');
 
-  router.get('/user/:userslug/anon-settings', middleware.buildHeader, async (req, res) => {
-    const anonName = await db.getObjectField(`user:${req.uid}`, 'anon:name');
+router.get('/user/:userslug/anon-settings', middleware.buildHeader, async (req, res) => {
+  console.log('[plugin-anon-identity] GET /user/:userslug/anon-settings accessed');    const anonName = await db.getObjectField(`user:${req.uid}`, 'anon:name');
     const anonPic = await db.getObjectField(`user:${req.uid}`, 'anon:picture');
 helpers.render(res, 'anon-identity/anon-settings', {
       anonName: anonName || '',
