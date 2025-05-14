@@ -12,7 +12,7 @@ plugin.init = async function (params) {
   router.get('/user/:userslug/anon-settings', middleware.buildHeader, async (req, res) => {
     const anonName = await db.getObjectField(`user:${req.uid}`, 'anon:name');
     const anonPic = await db.getObjectField(`user:${req.uid}`, 'anon:picture');
-    helpers.render(res, 'anon-settings', {
+helpers.render(res, 'anon-identity/anon-settings', {
       anonName: anonName || '',
       anonPic: anonPic || '',
     });
