@@ -1,0 +1,10 @@
+{
+  "name": "nodebb-plugin-anon-identity",
+  "version": "0.0.1",
+  "description": "תוסף זהות אנונימית ל-NodeBB",
+  "main": "plugin.js",
+  "scripts": {},
+  "keywords": ["nodebb", "plugin", "anonymous", "identity"],
+  "author": "אוקיי נט",
+  "license": "MIT"
+}

@@ -1,0 +1,16 @@
+{
+  "id": "nodebb-plugin-anon-identity",
+  "name": "Anon Identity",
+  "description": "תוסף זהות אנונימית למשתמשים בפורום",
+  "version": "0.0.1",
+  "library": "./plugin.js",
+  "hooks": [
+    { "hook": "static:app.load", "method": "init" },
+    { "hook": "filter:post.get", "method": "filterPostGet" }
+  ],
+  "staticDirs": {
+    "public": "static"
+  },
+  "templates": "static/templates",
+  "acpScripts": []
+}
