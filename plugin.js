@@ -22,12 +22,11 @@ plugin.init = async function (params) {
 
   router.post('/api/user/anon-settings', async (req, res) => {
     const { anonName, anonPic } = req.body;
-    if (!req.uid) {
-      return res.status(403).json({ error: 'Not logged in' });
-    }
+    if (!req.uid) return res.status(403).json({ error: 'Not logged in' });
 
     await db.setObjectField(`user:${req.uid}`, 'anon:name', anonName || '');
     await db.setObjectField(`user:${req.uid}`, 'anon:picture', anonPic || '');
+
     res.json({ status: 'saved' });
   });
 };
