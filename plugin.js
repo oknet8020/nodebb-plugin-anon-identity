@@ -2,6 +2,7 @@
 
 const db = require.main.require('./src/database');
 const user = require.main.require('./src/user');
+const helpers = require.main.require('./src/controllers/helpers');
 
 const plugin = {};
 
@@ -10,11 +11,10 @@ plugin.init = async function (params) {
 
   router.get('/user/:userslug/anon-settings', middleware.buildHeader, async (req, res) => {
     console.log('[plugin-anon-identity] GET /user/:userslug/anon-settings accessed');
-
     const anonName = await db.getObjectField(`user:${req.uid}`, 'anon:name');
     const anonPic = await db.getObjectField(`user:${req.uid}`, 'anon:picture');
 
-    res.render('anon-identity/anon-settings', {
+    helpers.render(res, 'anon-identity/anon-settings', {
       anonName: anonName || '',
       anonPic: anonPic || '',
     });
@@ -26,7 +26,6 @@ plugin.init = async function (params) {
 
     await db.setObjectField(`user:${req.uid}`, 'anon:name', anonName || '');
     await db.setObjectField(`user:${req.uid}`, 'anon:picture', anonPic || '');
-
     res.json({ status: 'saved' });
   });
 };
