@@ -1,16 +1,18 @@
 'use strict';
 
 const db = require.main.require('./src/database');
-const helpers = require.main.require('./src/controllers/helpers');
 
 const plugin = {};
 
 plugin.init = async function (params) {
   const { router, middleware } = params;
-router.get('/test-anon', middleware.buildHeader, (req, res) => {
-  res.render('anon-identity/test');
-});
 
+  // ניתוב בדיקה בסיסי לבדיקה שהתוסף בכלל טוען
+  router.get('/test-anon', middleware.buildHeader, (req, res) => {
+    res.render('anon-identity/test');
+  });
+
+  // ניתוב לדף ההגדרות האנונימיות
   router.get('/user/:userslug/anon-settings', middleware.buildHeader, async (req, res) => {
     console.log('[plugin-anon-identity] GET /user/:userslug/anon-settings accessed');
 
@@ -18,7 +20,7 @@ router.get('/test-anon', middleware.buildHeader, (req, res) => {
       const anonName = await db.getObjectField(`user:${req.uid}`, 'anon:name');
       const anonPic = await db.getObjectField(`user:${req.uid}`, 'anon:picture');
 
-      helpers.render(res, 'anon-identity/anon-settings', {
+      res.render('anon-identity/anon-settings', {
         anonName: anonName || '',
         anonPic: anonPic || '',
       });
@@ -28,6 +30,7 @@ router.get('/test-anon', middleware.buildHeader, (req, res) => {
     }
   });
 
+  // שמירת ההגדרות דרך POST
   router.post('/api/user/anon-settings', async (req, res) => {
     const { anonName, anonPic } = req.body;
 
@@ -46,6 +49,7 @@ router.get('/test-anon', middleware.buildHeader, (req, res) => {
   });
 };
 
+// שינוי המידע שמוצג בפוסט אנונימי
 plugin.filterPostGet = async function (hookData) {
   const post = hookData.postData;
 
