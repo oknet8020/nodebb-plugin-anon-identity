@@ -7,6 +7,9 @@ const plugin = {};
 
 plugin.init = async function (params) {
   const { router, middleware } = params;
+router.get('/test-anon', middleware.buildHeader, (req, res) => {
+  res.render('anon-identity/test');
+});
 
   router.get('/user/:userslug/anon-settings', middleware.buildHeader, async (req, res) => {
     console.log('[plugin-anon-identity] GET /user/:userslug/anon-settings accessed');
